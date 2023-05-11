@@ -1,8 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,17 +10,16 @@ import ru.kata.spring.boot_security.demo.entities.User;
 
 
 @Controller
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
 
     private final UserService userService;
-
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, UserDetailsService userDetailsService) {
         this.userService = userService;
-
+        this.userDetailsService = userDetailsService;
     }
 
     @GetMapping()

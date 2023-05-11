@@ -4,9 +4,7 @@ package ru.kata.spring.boot_security.demo.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
-
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,7 +31,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return getName();
+        return this.name;
     }
 
     @Override

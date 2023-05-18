@@ -36,5 +36,4 @@ public class UserController {
         return "user/user_information";
     }
 
-
 }

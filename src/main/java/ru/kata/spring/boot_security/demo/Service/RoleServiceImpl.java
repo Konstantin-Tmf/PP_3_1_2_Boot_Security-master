@@ -15,9 +15,8 @@ public class RoleServiceImpl implements RoleService {
         this.roleRepository = roleRepository;
     }
 
-
     @Override
     public void save(Role role) {
-
+        roleRepository.save(role);
     }
 }

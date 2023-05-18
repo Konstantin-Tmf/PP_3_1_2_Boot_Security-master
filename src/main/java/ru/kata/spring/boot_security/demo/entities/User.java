@@ -1,13 +1,10 @@
 package ru.kata.spring.boot_security.demo.entities;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
@@ -66,7 +63,6 @@ public class User implements UserDetails {
     public String getUsername() {
         return username;
     }
-
 
     public Long getId() {
         return id;

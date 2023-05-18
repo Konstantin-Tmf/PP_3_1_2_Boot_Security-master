@@ -14,14 +14,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
 @Service
-public class CustomUserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsServiceImpl(UserRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -39,13 +38,8 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         for (Role role : roles) {
             authorities.add(role);
         }
-
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
 
     }
-
-
-
-
 
 }

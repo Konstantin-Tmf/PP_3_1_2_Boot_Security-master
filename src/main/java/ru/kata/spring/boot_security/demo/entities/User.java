@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -16,14 +17,21 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
-
-    public User(String username) {
-        this.username = username;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "username")
     private String username;
@@ -31,28 +39,35 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
-    private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+
+    @ManyToMany
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
 
-    public User(Long id, String username, String password, String email, Set<Role> roles) {
-        this.id = id;
+    private Set<Role> roles = new HashSet<>();
+
+    public User(String firstname, String lastname, Integer age, String email, String username, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.age = age;
+        this.email = email;
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.roles = roles;
+
     }
+
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
-
 
     @Override
     public String getPassword() {

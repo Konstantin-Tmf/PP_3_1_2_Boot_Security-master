@@ -2,15 +2,14 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -21,7 +20,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -29,14 +28,24 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
-
     @Override
-    public void saveUser(User user) {
+    @Transactional
+    public void updateUser(User user) {
+        userRepository.save(user);
+
+    }
+    @Override
+    public User getOneUser(Long id) {
+        Optional<User> foundUser = userRepository.findById(id);
+        return foundUser.orElse(null);
+    }
+    @Override
+    public void save(User user) {
         userRepository.save(user);
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
@@ -44,9 +53,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username);
     }
 
-    @Override
-    public void updateUser(User user) {
-        userRepository.save(user);
-    }
 
 }

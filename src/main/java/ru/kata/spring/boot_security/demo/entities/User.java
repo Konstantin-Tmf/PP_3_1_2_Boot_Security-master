@@ -10,9 +10,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 @Setter
 @Entity
 @Table(name = "users")
@@ -40,7 +39,6 @@ public class User implements UserDetails {
     private String password;
 
 
-
     @ManyToMany
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -63,7 +61,12 @@ public class User implements UserDetails {
         this.roles.add(role);
     }
 
-
+    /**
+     * // Здесь getRoles() возвращает коллекцию ролей пользователя.
+     * // Так как роли реализуют интерфейс GrantedAuthority, их можно безопасно возвращать как коллекцию объектов этого интерфейса.
+     * // Когда пользователь аутентифицируется и требуется проверить его доступ, Spring Security будет использовать этот метод
+     * // для получения всех ролей пользователя и дальнейшей проверки их наличия в разрешениях на доступ.
+     **/
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -77,10 +80,6 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return username;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     @Override
@@ -103,14 +102,5 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", roles=" + roles +
-                '}';
-    }
+
 }

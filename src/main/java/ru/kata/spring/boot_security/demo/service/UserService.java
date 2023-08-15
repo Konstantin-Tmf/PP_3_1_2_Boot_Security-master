@@ -4,7 +4,7 @@ import ru.kata.spring.boot_security.demo.entities.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService{
+public interface UserService {
     List<User> getAllUsers();
 
     Optional<User> findById(Long id);
@@ -16,7 +16,7 @@ public interface UserService{
     User findByUsername(String username);
 
     void updateUser(User user);
-    User getOneUser(Long id);
 
+    User getOneUser(Long id);
 
 }

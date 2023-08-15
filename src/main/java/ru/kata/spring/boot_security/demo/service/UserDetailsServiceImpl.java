@@ -24,20 +24,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    // Метод loadUserByUsername является частью механизма аутентификации Spring Security.
+    // Он загружает информацию о пользователе из базы данных и создает объект UserDetails,
+    // который используется для проверки аутентичности и авторизации пользователя в системе.
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Находим пользователя по имени пользователя (логину)
         User user = userRepository.findByUsername(username);
+        // Если пользователь не найден, выбрасываем исключение UsernameNotFoundException
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
 
+        // Получаем роли, принадлежащие пользователю
         Collection<Role> roles = user.getRoles();
 
+        // Создаем список для хранения GrantedAuthority (ролей и разрешений)
         List<GrantedAuthority> authorities = new ArrayList<>();
+        // В цикле проходимся по списку ролей пользователя, и каждая роль добавляется в список разрешений.
         for (Role role : roles) {
             authorities.add(role);
         }
+        // Возвращаем объект User из Spring Security, предоставляющий информацию о пользователе: Логин пользователя,
+        // Пароль пользователя (уже зашифрованный), Список ролей (GrantedAuthority)
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
 
     }
